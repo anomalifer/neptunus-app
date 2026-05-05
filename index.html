@@ -3,28 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEPTUNUS BOT</title>
+    <title>NEPTUNUS DATABASE ADMIN</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --bg: #0a0c10;
+            --card-bg: #161b22;
+            --accent: #58a6ff;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --success: #238636;
+        }
         body {
-            background-color: #000;
-            color: white;
-            text-align: center;
-            font-family: Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
         }
-        img {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
         }
-        h1 { color: #ff4d4d; margin-top: 20px; }
+        .header h1 { color: var(--accent); font-size: 1.5rem; margin: 0; }
+        
+        /* Statistik Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat-card span { display: block; font-size: 0.8rem; color: #8b949e; }
+        .stat-card b { font-size: 1.2rem; color: #ffffff; }
+
+        /* Tabel List Token */
+        .db-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .db-header {
+            padding: 12px;
+            background: #21262d;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .token-list { padding: 0; margin: 0; list-style: none; }
+        .token-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+        .token-id { color: var(--accent); font-family: monospace; }
+        .status-badge {
+            background: rgba(35, 134, 54, 0.2);
+            color: #3fb950;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
+        /* Tombol Aksi */
+        .actions { margin-top: 20px; display: grid; gap: 10px; }
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button.secondary { background: #30363d; color: var(--text); }
     </style>
 </head>
 <body>
-    <h1>NEPTUNUS BOT</h1>
-    <img src="https://raw.githubusercontent.com/anomalifer/neptunus-app/main/1001390086.png" alt="Neptunus Wizard">
-    <p>Welcome to the Magic World!</p>
+
+    <div class="header">
+        <h1>🛰 NEPTUNUS DATABASE</h1>
+        <p style="font-size: 0.8rem;">System Administrator Panel</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span>TOTAL USERS</span>
+            <b id="user-count">1,240</b>
+        </div>
+        <div class="stat-card">
+            <span>TOTAL TOKENS</span>
+            <b id="token-count">852</b>
+        </div>
+    </div>
+
+    <div class="db-container">
+        <div class="db-header">
+            <span>List Token Terbaru</span>
+            <span style="color: var(--accent);">View All</span>
+        </div>
+        <ul class="token-list">
+            <li class="token-item">
+                <span class="token-id">TK-99281-X</span>
+                <span class="status-badge">Active</span>
+            </li>
+            <li class="token-item">
+                <span class="token-id">TK-88210-Z</span>
+                <span class="status-badge">Active</span>
+            </li>
+            <li class="token-item">
+                <span class="token-id">TK-77102-Y</span>
+                <span class="status-badge">Active</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="actions">
+        <button onclick="Telegram.WebApp.showAlert('Fetching live data...')">Refresh Database</button>
+        <button class="secondary" onclick="Telegram.WebApp.close()">Close Panel</button>
+    </div>
+
+    <script>
+        // Inisialisasi Telegram Web App
+        const webapp = window.Telegram.WebApp;
+        webapp.ready();
+        webapp.expand(); // Biar tampilan langsung full ke atas
+    </script>
 </body>
 </html>
