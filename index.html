@@ -138,10 +138,46 @@
     </div>
 
     <script>
-        // Inisialisasi Telegram Web App
-        const webapp = window.Telegram.WebApp;
-        webapp.ready();
-        webapp.expand(); // Biar tampilan langsung full ke atas
+    const webapp = window.Telegram.WebApp;
+    webapp.ready();
+    webapp.expand();
+
+    async function fetchData() {
+        try {
+            // Pakai domain panel lo langsung + port 2014
+            const response = await fetch('http://tepmom.xyxv.me:2014/api/stats');
+            
+            if (!response.ok) throw new Error('Server VPS tidak merespon');
+            
+            const data = await response.json();
+
+            // Update angka di Dashboard
+            document.getElementById('user-count').innerText = data.totalUsers.toLocaleString();
+            document.getElementById('token-count').innerText = data.totalTokens.toLocaleString();
+            
+            // Update List Token
+            const listContainer = document.querySelector('.token-list');
+            listContainer.innerHTML = ''; 
+
+            data.listToken.forEach(token => {
+                const li = document.createElement('li');
+                li.className = 'token-item';
+                li.innerHTML = `
+                    <span class="token-id">${token.id}</span>
+                    <span class="status-badge">${token.status}</span>
+                `;
+                listContainer.appendChild(li);
+            });
+
+            console.log('Koneksi ke Neptunus VPS Berhasil!');
+        } catch (error) {
+            console.error('Gagal sinkron data:', error);
+            // Kalau gagal, kita kasih tanda di dashboard
+            document.getElementById('user-count').innerText = "ERR";
+        }
+    }
+
+    fetchData();
+    setInterval(fetchData, 30000); // Update tiap 30 detik
     </script>
-</body>
-</html>
+    
