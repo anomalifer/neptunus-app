@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Koneksi Tester</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; padding: 20px; text-align: center; }
+        .box { border: 1px solid #444; padding: 20px; border-radius: 10px; background: #222; }
+        .status { font-size: 20px; font-weight: bold; margin: 20px 0; }
+        .online { color: #00ff00; }
+        .offline { color: #ff4444; }
+        button { padding: 10px 20px; cursor: pointer; background: #555; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Neptunus Connection Test</h2>
+        <p>Mengecek ke: <code>http://tepmom.xyxv.me:2014/api/stats</code></p>
+        
+        <div id="status" class="status">Menunggu...</div>
+        <div id="detail"></div>
+        <br>
+        <button onclick="check()">Tes Sekarang</button>
+    </div>
+
+    <script>
+        async function check() {
+            const statusDiv = document.getElementById('status');
+            const detailDiv = document.getElementById('detail');
+            statusDiv.innerText = "⏳ Sedang Menghubungi VPS...";
+            
+            try {
+                // Kita coba panggil API lo
+                const start = Date.now();
+                const res = await fetch('http://tepmom.xyxv.me:2014/api/stats', { 
+                    mode: 'cors',
+                    method: 'GET'
+                });
+                const time = Date.now() - start;
+
+                if (res.ok) {
+                    const data = await res.json();
+                    statusDiv.innerHTML = "<span class='online'>✅ ONLINE!</span>";
+                    detailDiv.innerHTML = `Koneksi sukses dalam ${time}ms<br>Data dari VPS: ${JSON.stringify(data)}`;
+                } else {
+                    statusDiv.innerHTML = "<span class='offline'>❌ ERROR SERVER</span>";
+                    detailDiv.innerText = "Server merespon, tapi statusnya " + res.status;
+                }
+            } catch (err) {
+                statusDiv.innerHTML = "<span class='offline'>❌ OFFLINE / DIBLOKIR</span>";
+                detailDiv.innerHTML = "Penyebab: Port 2014 tidak bisa diakses dari luar.<br><small>" + err.message + "</small>";
+            }
+        }
+        check();
+    </script>
+</body>
+</html>
+
