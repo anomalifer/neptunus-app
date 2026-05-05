@@ -31,7 +31,7 @@
             try {
                 // Kita coba panggil API lo
                 const start = Date.now();
-                const res = await fetch('http://tepmom.xyxv.me:2014/api/stats', { 
+                const res = await fetch('http://tepmom.xyxv.me:8080/api/stats', { 
                     mode: 'cors',
                     method: 'GET'
                 });
@@ -47,7 +47,7 @@
                 }
             } catch (err) {
                 statusDiv.innerHTML = "<span class='offline'>❌ OFFLINE / DIBLOKIR</span>";
-                detailDiv.innerHTML = "Penyebab: Port 2014 tidak bisa diakses dari luar.<br><small>" + err.message + "</small>";
+                detailDiv.innerHTML = "Penyebab: Port 8080 tidak bisa diakses dari luar.<br><small>" + err.message + "</small>";
             }
         }
         check();
